@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" class="js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BoxBites — Home</title>
+<style>
+  :root{
+    --bg:#0b0b0c; --text:#f5f5f6; --muted:#a1a1aa;
+
+    /* Layout */
+    --content-w: 1100px;
+    --row-gap: clamp(16px, 4vw, 36px);
+    --stack-gap: clamp(56px, 7vw, 84px);
+
+    /* Motion */
+    --reveal-distance:28px; --reveal-duration:15000ms;
+    --reveal-ease:cubic-bezier(.2,.8,.2,1);
+
+    /* Brick + image styling (content bricks) */
+    --brick-color: 195, 161, 116;                /* base RGB */
+    --brick-bg: rgba(var(--brick-color), 0.55);  /* reduced opacity for content bricks */
+    --brick-border: rgb(var(--brick-color));
+    --brick-radius: 16px;
+    --brick-border-w: 2px;
+    --image-border-w: 2px;
+
+    /* Background brick wall variables */
+    --brick-alpha: 0.18;                         /* faint background bricks */
+    --mortar: 14px;                              /* spacing between bg bricks */
+    --bg-brick-w: clamp(90px, 12vw, 160px);      /* bg brick width */
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    line-height:1.35;
+    scroll-snap-type:y mandatory;
+    overflow-x:hidden;
+    position: relative;
+  }
+
+  /* ===== Fixed faint brick-wall background ===== */
+  .brick-wall{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 1;
+  }
+  .brick-row{
+    display:flex;
+    gap: var(--mortar);
+    margin-bottom: var(--mortar);
+    padding: 0 var(--mortar);
+  }
+  .brick-row.offset{
+    padding-left: calc(var(--bg-brick-w) / 2 + var(--mortar) / 2);
+    padding-right: calc(var(--bg-brick-w) / 2 + var(--mortar) / 2);
+  }
+  .brick{
+    width: var(--bg-brick-w);
+    aspect-ratio: 1 / 2;
+    background: transparent;
+    border: var(--brick-border-w) solid rgba(var(--brick-color), var(--brick-alpha));
+    border-radius: 12px;
+    flex: 0 0 auto;
+  }
+  @media (max-width: 600px){
+    :root{ --bg-brick-w: clamp(70px, 30vw, 120px); --mortar: 10px; }
+  }
+
+  /* ===== Sections & content ===== */
+  .section{
+    min-height:100vh; display:grid; place-items:center;
+    padding:48px 20px; scroll-snap-align:start;
+  }
+  .section--auto{ min-height:auto; padding:72px 0; }
+
+  .container{max-width:var(--content-w); width:100%; padding:0 20px;}
+
+  /* Headline + cycling word */
+  .headline{
+    font-weight:800; font-size:clamp(2rem,6vw,4rem);
+    letter-spacing:-.02em; text-align:center; margin:0;
+  }
+  .changing-word{display:inline-block; opacity:0; transition:opacity .8s ease-in-out; color:rgb(255,69,58);}
+  .changing-word.show{opacity:1}
+
+  /* Reveal */
+  .reveal{
+    opacity:0; transform:translateY(calc(-1 * var(--reveal-distance)));
+    transition: opacity var(--reveal-duration) var(--reveal-ease),
+                transform var(--reveal-duration) var(--reveal-ease);
+    will-change:opacity,transform;
+  }
+  .reveal.in-view{opacity:1; transform:translateY(0)}
+
+  .product-wrap{display:grid; gap:22px; justify-items:center; text-align:center}
+  .product-image{
+    width:min(780px,92vw); height:auto; border-radius:16px;
+    box-shadow:0 10px 40px rgba(0,0,0,.5);
+    background: rgba(255,255,255,.02);
+  }
+  .muted{color:var(--muted)}
+
+  /* Fixed: hero tagline styling */
+  .hero-tagline {
+  color: #f5f5f6;
+  font-size: clamp(2.2rem, 6vw, 3.6rem); /* scales with screen */
+  font-weight: 800;
+  margin: 0 0 28px;
+  text-align: center;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: taglineFadeIn 1.2s ease forwards;
+}
+
+@keyframes taglineFadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.scroll-down {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);   /* baseline centering */
+  font-size: 2.5rem;
+  color: #ffffff;                /* solid white */
+  background: none;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity .35s ease, transform .35s ease;
+  opacity: 1;
+  animation: bounce 2.5s infinite;
+}
+
+.scroll-down.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 6px); /* keeps consistent baseline when hidden */
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translate(-50%, 0);
+  }
+  40% {
+    transform: translate(-50%, -10px);
+  }
+  60% {
+    transform: translate(-50%, -5px);
+  }
+}
+
+
+  /* =======================
+     WHY BRICK BITES (two bricks wide)
+     ======================= */
+  .why{ display:grid; row-gap: var(--stack-gap); }
+
+  .why-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--row-gap);
+    align-items:stretch;
+  }
+  .why-row.even{ grid-auto-flow: dense; }
+  .why-row.even .why-media{ order: -1; }
+
+  .why-content{
+    border: var(--brick-border-w) solid var(--brick-border);
+    border-radius: var(--brick-radius);
+    padding: clamp(16px, 3vw, 28px);
+    display:flex; flex-direction:column; justify-content:center;
+    background: var(--brick-bg);
+    backdrop-filter: saturate(110%);
+  }
+  .why-content h3{ margin:0 0 8px; font-size:clamp(1.2rem,3.2vw,1.6rem); }
+  .why-content p{ margin:0; color:#fff; max-width:60ch; opacity:.92; }
+
+  .why-media img {
+  width: 100%;
+  aspect-ratio: 7 / 2;              /* enforce 7:2 length:height */
+  object-fit: cover;
+  border-radius: var(--brick-radius);
+  box-shadow: 0 10px 40px rgba(0,0,0,.5);
+  border: var(--image-border-w) solid var(--brick-border);
+  background: #000;
+}
+
+.why-content {
+  border: var(--brick-border-w) solid var(--brick-border);
+  border-radius: var(--brick-radius);
+  padding: clamp(16px, 3vw, 28px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--brick-bg);
+  backdrop-filter: saturate(110%);
+  aspect-ratio: 7 / 2;              /* match images: 7 wide, 2 tall */
+}
+
+
+  @media (max-width: 860px){
+    .why-row{ grid-template-columns: 1fr; row-gap: var(--row-gap); }
+    .container{ padding:0 16px; }
+    .section--auto{ padding:56px 0; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .changing-word{transition:none}
+    .reveal{transition:none; transform:none; opacity:1}
+    .scroll-down{animation:none}
+  }
+  .accent {
+  color: var(--brick-border);   /* uses your cardboard brand color */
+}
+</style>
+</head>
+<body>
+
+  <!-- Fixed faint brick-wall background -->
+  <section class="brick-wall" id="brickWall" aria-hidden="true"></section>
+
+  <!-- SECTION 1 -->
+  <section class="section" style="position: relative;">
+    <div class="container">
+      <h1 class="headline reveal">
+        Eating healthy doesn't have to be <span id="word" class="changing-word"></span>
+      </h1>
+      <p class="muted reveal" data-delay="120" style="text-align:center;max-width:650px;margin:18px auto 0">
+        Real food. Real fast. Minimal fuss.
+      </p>
+      <div style="height:12vh"></div>
+    </div>
+    <button class="scroll-down" id="scrollCue" aria-label="Scroll down" title="Scroll"
+  onclick="window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })">
+  &#x2193;
+</button>
+  </section>
+
+<!-- SECTION 2 (Hero with animated tagline above image) -->
+<section class="section">
+  <div class="container product-wrap">
+    <h1 class="hero-tagline">
+      Taking the "<span class="accent">prep</span>" out of Meal<span class="accent">prep</span>
+    </h1>
+    
+
+    <img src="./res/CordelyCounter.jpg"
+         alt="Brick Bites product"
+         class="product-image reveal"
+         data-delay="100"
+         loading="lazy"
+         id="productImg">
+
+    <p class="muted reveal" data-delay="160" style="max-width:650px">
+      Heat, eat, move on with your life.
+    </p>
+  </div>
+</section>
+
+
+  <!-- SECTION 3: WHY BRICK BITES -->
+  <section class="section section--auto">
+    <div class="container">
+      <h2 class="headline reveal" style="font-size:clamp(1.6rem,4vw,2.4rem);">Why BoxBites?</h2>
+      <p class="muted reveal" data-delay="120" style="text-align:center;max-width:720px;margin:8px auto 40px">
+        Four reasons your future self will love you for trying this. 
+      </p>
+
+      <div class="why">
+        <div class="why-row">
+          <div class="why-content reveal" data-delay="80">
+            <h3>Real, Whole Ingredients, No Weird Stuff</h3>
+            <p>Whole foods that are minimally processed. No food science going on here.</p>
+          </div>
+          <div class="why-media reveal" data-delay="140">
+            <img src="./res/why-1.jpg" alt="Fresh whole ingredients">
+          </div>
+        </div>
+
+        <div class="why-row even">
+          <div class="why-content reveal" data-delay="80">
+            <h3>Ridiculously Convenient</h3>
+            <p>Microwave. Eat. Done. Minimal dishes, more time to do the things you actually care about.</p>
+          </div>
+          <div class="why-media reveal" data-delay="140">
+            <img src="./res/why-2.jpg" alt="Quick microwave convenience">
+          </div>
+        </div>
+
+        <div class="why-row">
+          <div class="why-content reveal" data-delay="80">
+            <h3>Balanced Macros That Actually Satisfy</h3>
+            <p>High protein, fiber, and slow carbs so you’re even-keeled between meals.</p>
+          </div>
+          <div class="why-media reveal" data-delay="140">
+            <img src="./res/why-3.jpg" alt="Balanced nutrition">
+          </div>
+        </div>
+
+        <div class="why-row even">
+          <div class="why-content reveal" data-delay="80">
+            <h3>Eco and EDC Aware Packaging</h3>
+            <p>Our packaging is 100% cellulose and 100% free of endocrine-disrupting chemicals. Yes, even the liner.</p>
+          </div>
+          <div class="why-media reveal" data-delay="140">
+            <img src="./res/why-4.jpg" alt="Eco-friendly packaging">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+  const words = ["expensive","time-consuming","inconvenient","unappetizing","messy","complicated","bland"];
+  let i = 0;
+  const wordEl = document.getElementById("word");
+  function changeWord(){
+    wordEl.classList.remove("show");
+    setTimeout(() => {
+      wordEl.textContent = words[i];
+      wordEl.classList.add("show");
+      i = (i + 1) % words.length;
+    }, 500);
+  }
+  changeWord(); setInterval(changeWord, 2700);
+
+  const items = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        const el = entry.target;
+        const delay = Number(el.dataset.delay || 0);
+        setTimeout(() => el.classList.add('in-view'), delay);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: "0px 0px -12% 0px" });
+  items.forEach(el => io.observe(el));
+
+  const img = document.getElementById('productImg');
+  function forceRevealIfVisible(el){
+    const r = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const onScreen = r.top < vh && r.bottom > 0;
+    if (onScreen && !el.classList.contains('in-view')) el.classList.add('in-view');
+  }
+  img?.addEventListener('load', () => { forceRevealIfVisible(img); setTimeout(() => img.classList.add('in-view'), 4000); });
+  if (img?.complete) { forceRevealIfVisible(img); }
+
+  const scrollCue = document.getElementById('scrollCue');
+  function updateScrollCue(){
+    const scrolled = window.scrollY || document.documentElement.scrollTop;
+    const nearTop = scrolled < 10;
+    const nearSnap = scrolled > window.innerHeight * 0.2;
+    if (nearTop) scrollCue.classList.remove('hidden');
+    else if (nearSnap) scrollCue.classList.add('hidden');
+  }
+  if (scrollCue){ updateScrollCue(); window.addEventListener('scroll', updateScrollCue, { passive: true }); window.addEventListener('resize', updateScrollCue); }
+
+  (function(){
+    const wall = document.getElementById('brickWall');
+    function pxVar(name){
+      const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return parseFloat(raw);
+    }
+    function buildWall(){
+      if (!wall) return;
+      wall.innerHTML = '';
+
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+      const brickW = pxVar('--bg-brick-w');
+      const mortar  = pxVar('--mortar');
+      const brickH = brickW * 2;
+
+      const rowHeight = brickH + mortar;
+      const rows = Math.ceil((vh + rowHeight) / rowHeight) + 1;
+      const bricksPerRow = Math.ceil((vw + brickW) / (brickW + mortar)) + 2;
+
+      for (let r = 0; r < rows; r++){
+        const row = document.createElement('div');
+        row.className = 'brick-row' + (r % 2 ? ' offset' : '');
+        for (let b = 0; b < bricksPerRow; b++){
+          const brick = document.createElement('div');
+          brick.className = 'brick';
+          brick.style.height = brickH + 'px';
+          row.appendChild(brick);
+        }
+        wall.appendChild(row);
+      }
+    }
+    let timer = null;
+    const onResize = () => { clearTimeout(timer); timer = setTimeout(buildWall, 100); };
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('orientationchange', onResize);
+    buildWall();
+  })();
+</script>
+
+</body>
+</html>
