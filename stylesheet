@@ -1,0 +1,214 @@
+/* =============================================
+   Brick Bites — Dark Brutalist Master Styles
+   Zero deps. Mobile-first. Subtle motion.
+   ============================================= */
+
+/* ---------- Reset ---------- */
+*,*::before,*::after{box-sizing:border-box}
+:root { color-scheme: dark; }
+html,body{height:100%}
+body,h1,h2,h3,h4,p,figure,blockquote,ul,ol,dl{margin:0}
+img,svg,video{display:block;max-width:100%;height:auto}
+input,button,textarea,select{font:inherit;color:inherit;background:none;border:none}
+a{color:inherit;text-decoration:none}
+
+/* ---------- Tokens ---------- */
+:root{
+  /* Palette: dark + eco/wood hints */
+  --bg:#0b0b0c;             /* base */
+  --surface:#101012;         /* cards/sections */
+  --elev:#16161a;            /* hover/active */
+  --text:#f5f5f6;            /* primary text */
+  --muted:#a1a1aa;           /* secondary text */
+  --accent:#C3A174;          /* “wood/cardboard” */
+  --leaf:#7FA87F;            /* eco hint (mossy) */
+  --border:#2a2a30;          /* brutal lines */
+
+  /* Type & rhythm */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --fs-900: clamp(2rem, 6vw, 3rem);
+  --fs-800: clamp(1.5rem, 4vw, 2.25rem);
+  --fs-700: 1.5rem;
+  --fs-600: 1.25rem;
+  --fs-500: 1.125rem;
+  --fs-400: 1rem;
+  --lh: 1.6;
+
+  /* Spacing (8pt-ish) */
+  --s-1:.25rem; --s-2:.5rem; --s-3:.75rem; --s-4:1rem; --s-5:1.5rem; --s-6:2rem; --s-8:3rem;
+
+  /* Shape & depth */
+  --radius: 10px;            /* brutalist tends to be square; keep light rounding */
+  --shadow-1: 0 1px 0 rgba(255,255,255,0.02), 0 8px 20px rgba(0,0,0,0.35);
+
+  /* Motion */
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --t-quick: 120ms;
+  --t-slow: 260ms;
+
+  /* Layout */
+  --max: 1100px;             /* container max-width */
+}
+
+/* ---------- Base ---------- */
+body{
+  background:linear-gradient(180deg, #0b0b0c 0%, #0e0e10 100%);
+  color:var(--text);
+  font-family:var(--font-sans);
+  font-size:var(--fs-400);
+  line-height:var(--lh);
+  letter-spacing:.01em;
+}
+
+/* Selection tint: eco */
+::selection{background:color-mix(in oklab, var(--leaf) 35%, black); color:#fff}
+
+/* Focus states: obvious but not tacky */
+:focus-visible{
+  outline:2px solid var(--leaf);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+/* ---------- Containers & Layout ---------- */
+.container{
+  width:min(100% - 2rem, var(--max));
+  margin-inline:auto;
+}
+
+.section{
+  padding: var(--s-8) 0;
+  border-top:1px solid var(--border);
+}
+
+.stack>*+*{margin-top:var(--s-4)}               /* vertical rhythm */
+.cluster{display:flex;flex-wrap:wrap;gap:var(--s-3);align-items:center}
+.grid{display:grid;gap:var(--s-4)}
+@media (min-width:48rem){ .grid.cols-2{grid-template-columns:1fr 1fr} }
+@media (min-width:64rem){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} }
+
+/* ---------- Typography ---------- */
+h1,h2,h3{font-weight:800; line-height:1.2; letter-spacing:.01em}
+h1{font-size:var(--fs-900)}
+h2{font-size:var(--fs-800)}
+h3{font-size:var(--fs-700)}
+.lead{font-size:var(--fs-500); color:var(--muted)}
+.mono{font-family:var(--font-mono);font-size:.95em;}
+
+/* Brutalist rules & underlines */
+.rule{border-top:2px solid var(--border); padding-top:var(--s-4)}
+.u-underline{box-shadow:inset 0 -2px 0 var(--border)}
+
+/* ---------- Surfaces ---------- */
+.card{
+  background:var(--surface);
+  border:2px solid var(--border);
+  border-radius:var(--radius);
+  padding:var(--s-5);
+  box-shadow:var(--shadow-1);
+  transition:transform var(--t-quick) var(--ease), border-color var(--t-quick) var(--ease), background var(--t-quick) var(--ease);
+}
+.card:hover{ transform:translateY(-2px); border-color:color-mix(in oklab, var(--accent) 30%, var(--border)); background:var(--elev); }
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:.6ch; padding:.7rem 1rem;
+  border:2px solid var(--border);
+  border-radius:8px;
+  font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+  transition: background var(--t-quick) var(--ease), transform var(--t-quick) var(--ease), border-color var(--t-quick) var(--ease);
+  cursor:pointer; user-select:none;
+}
+.btn:active{ transform:translateY(1px) }
+.btn--primary{ background:var(--accent); color:#141313; border-color:var(--accent); }
+.btn--primary:hover{ background:color-mix(in oklab, var(--accent) 85%, white); }
+.btn--ghost{ background:transparent; color:var(--text); }
+.btn--ghost:hover{ background:var(--elev); border-color:color-mix(in oklab, var(--leaf) 25%, var(--border)); }
+.btn--leaf{ background:var(--leaf); color:#0c0c0c; border-color:var(--leaf); }
+
+.btn--sm{ padding:.5rem .75rem; font-size:.85rem }
+.btn--lg{ padding:1rem 1.25rem; font-size:1.05rem }
+
+/* ---------- Navigation ---------- */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(11,11,12,.8); backdrop-filter: blur(6px);
+  border-bottom:2px solid var(--border);
+}
+.nav .bar{ display:flex; align-items:center; justify-content:space-between; gap:var(--s-4); padding:.9rem 1rem; }
+.nav a{ font-weight:700 }
+.nav a:hover{ text-decoration:underline }
+
+/* ---------- Forms ---------- */
+.field{
+  display:grid; gap:.5rem;
+}
+.label{ font-weight:700; font-size:.95rem }
+.input, .select, .textarea{
+  padding:.8rem 1rem; background:#0d0d0f; color:var(--text);
+  border:2px solid var(--border); border-radius:8px;
+  transition:border-color var(--t-quick) var(--ease), background var(--t-quick) var(--ease);
+}
+.input::placeholder, .textarea::placeholder{ color:#6d6d73 }
+.input:focus, .select:focus, .textarea:focus{
+  border-color:color-mix(in oklab, var(--leaf) 35%, var(--border));
+  background:#0f0f12;
+}
+.help{ color:var(--muted); font-size:.9rem }
+
+/* ---------- Tables (hard lines, brutal) ---------- */
+.table{
+  width:100%; border-collapse:collapse; font-size:.95rem;
+  border:2px solid var(--border);
+}
+.table th, .table td{ padding:.75rem 1rem; border-top:2px solid var(--border) }
+.table th{ text-align:left; font-weight:800; background:#0d0d10 }
+
+/* ---------- Lists ---------- */
+.list{ padding-left:1.25rem }
+.list li{ margin:.4rem 0 }
+.list--flat{ list-style:none; padding:0 }
+.list--flat li+li{ border-top:1px dashed var(--border); padding-top:.5rem; margin-top:.5rem }
+
+/* ---------- Badges / Chips ---------- */
+.badge{
+  display:inline-block; padding:.35rem .6rem; border:2px solid var(--border);
+  border-radius:999px; font-weight:700; font-size:.8rem;
+}
+.badge--leaf{ background:rgba(127,168,127,0.1); border-color:var(--leaf); color:var(--leaf) }
+.badge--wood{ background:rgba(195,161,116,0.12); border-color:var(--accent); color:var(--accent) }
+
+/* ---------- Links ---------- */
+.link{ text-decoration:underline; text-underline-offset:2px; text-decoration-thickness:2px }
+.link:hover{ text-decoration-color:var(--accent) }
+
+/* ---------- Utilities ---------- */
+.center{ display:grid; place-items:center }
+.max{ max-width:var(--max); margin-inline:auto }
+.pad{ padding:var(--s-5) }
+.pad-0{ padding:0 } .mt-0{ margin-top:0 } .mt-4{ margin-top:var(--s-4) } .mb-4{ margin-bottom:var(--s-4) }
+.hide{ display:none !important }
+.only-mobile{ display:block } @media(min-width:48rem){ .only-mobile{ display:none } }
+.only-desktop{ display:none } @media(min-width:48rem){ .only-desktop{ display:block } }
+
+/* ---------- Animations (subtle) ---------- */
+.fade-in{ opacity:0; transform:translateY(6px); animation:fadeIn var(--t-slow) var(--ease) forwards }
+@keyframes fadeIn{ to{ opacity:1; transform:none } }
+
+.hover-rise{ transition:transform var(--t-quick) var(--ease) }
+.hover-rise:hover{ transform: translateY(-2px) }
+
+/* Respect “reduce motion” */
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; scroll-behavior:auto !important }
+}
+
+/* ---------- Footer ---------- */
+.footer{
+  border-top:2px solid var(--border);
+  padding:var(--s-6) 0;
+  color:var(--muted);
+  font-size:.95rem;
+}

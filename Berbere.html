@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berbere Chicken — Intro + Survey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* keep the same CSS as your oats page */
+    :root {
+      --bg: #0b0b0c;
+      --card: #151517;
+      --text: #f5f5f6;
+      --muted: #a1a1aa;
+      --accent: #c9a66b;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 28px; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 28px rgba(0,0,0,.35);
+      overflow: hidden;
+    }
+    header { padding: 22px 22px 10px; }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.02em; }
+    .tag {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(201,166,107,.15);
+      border: 1px solid rgba(201,166,107,.4);
+      color: #f6e7cd;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    p.lead { color: var(--muted); margin: 10px 0 0; }
+    section { padding: 18px; }
+    .frame {
+      width: 100%;
+      aspect-ratio: 16/10;
+      border: 0;
+      border-radius: 12px;
+      background: #0f0f11;
+    }
+    footer {
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <span class="tag">Berbere Chicken • Pilot</span>
+        <h1>Quick thoughts on my Berbere Chicken Box Bite?</h1>
+        <p class="lead">
+          You found a test batch of my ready-to-heat <strong>Berbere Chicken</strong>.
+          I’m dialing in flavor/texture for a small-batch food project. 
+          If you can spare ~60 seconds to give feedback, you’ll help me make this actually great.
+        </p>
+
+        <p>
+          <strong>Ingredients:</strong> Water, jasmine rice, chicken breast, onion,  kale, tomato paste, garlic, ginger,
+          <em>berbere</em> spice blend (chile, paprika, fenugreek, cardamom, coriander, cumin, clove),
+          carrot, chickpeas, lemon, olive oil, and salt.
+          <br>
+          <strong>Allergens:</strong> None added beyond spices; prepared in a home kitchen.
+          <br>
+          <em>Note:</em> This is an Ethiopian inspired recipe I'm trying. I'm curious what Americans think of it.
+        </p>
+
+        <p><strong>Heating:</strong> From frozen: 4–5 minutes. From refrigerated: 2½–3 minutes.
+          Microwave times vary—heat until the bottom of box feels hot to the touch.</p>
+      </header>
+
+      <section>
+        <iframe class="frame" title="Berbere Chicken feedback"
+          src="https://docs.google.com/forms/d/e/1FAIpQLSdMmhckzc2nnghJBiXC5WdVEmIsNpXaRMaGaHLRsJgIJewtzg/viewform?usp=header">
+          Loading…
+        </iframe>
+      </section>
+
+      <footer>Thanks for helping me iterate. — Box Bites</footer>
+    </div>
+  </div>
+</body>
+</html>

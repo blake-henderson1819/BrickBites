@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About the Creator — Brick Bites</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0c;
+      --card: #151517;
+      --text: #f5f5f6;
+      --muted: #a1a1aa;
+      --accent: #C3A174;
+      --radius: 16px;
+      --headerH: 0px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      scroll-snap-type: y mandatory;
+      scroll-padding-top: var(--headerH);
+      -webkit-overflow-scrolling: touch;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 28px rgba(0,0,0,.35);
+    }
+    header { padding: 22px 22px 10px; text-align:center; }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.02em; }
+    .tag {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(195,161,116,.15);
+      border: 1px solid rgba(195,161,116,.4);
+      color: #f6e7cd;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    p.lead { color: var(--muted); margin: 10px 0 0; font-size: 1.05rem; }
+
+    /* Slide section base */
+    .sentence-section {
+      min-height: calc(100vh - var(--headerH));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      text-align: center;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .sentence-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide { display:flex; flex-direction:column; align-items:center; gap:22px; }
+    .slide-text { max-width: 58ch; margin: 0 auto; }
+    .regular-img { max-width: 100%; height: auto; border-radius: var(--radius); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .sentence-section { transition: none; opacity: 1 !important; transform: none !important; }
+    }
+    footer {
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header id="site-header">
+        <span class="tag">About the Creator</span>
+        <h1>Blake Henderson</h1>
+        <p class="lead">Engineering student, foodie, and the mind behind Brick Bites.</p>
+      </header>
+
+      <!-- Slides -->
+      <section class="sentence-section">
+        <div class="slide">
+          <img class="regular-img" src="res/blakepfp.jpg 12-56-39-147.jpg" alt="Blake Henderson">
+          <p class="slide-text">Hi, I’m Blake — a Engineering student at Oregon State University with a passion for whole, convienent, sustainable food.</p>
+        </div>
+      </section>
+
+      <section class="sentence-section">
+        <p class="slide-text">I created Brick Bites to give busy students real nutrition without the price tag or the prep time.</p>
+      </section>
+
+      <section class="sentence-section">
+        <p class="slide-text">When I’m not in the lab or the kitchen, you might find me trail running, tinkering with DIY projects, or growing Mushrooms.</p>
+      </section>
+
+      <section class="sentence-section">
+        <p class="slide-text">This idea started as a way to stop having to meal prep so much, but quickly became something I wanted to share with others.</p>
+      </section>
+
+      <section class="sentence-section">
+        <p class="slide-text">I'm obsessed with this idea and I am going to drive myself crazy pursuing it.</p>
+      </section>
+
+      <section class="sentence-section">
+        <p class="slide-text">I appreciate you stopping by — and for supporting the project.</p>
+      </section>
+
+      <section class="sentence-section">
+        <p class="slide-text">I appreciate you,</p>
+      </section>
+      <section class="sentence-section">
+        <p class="slide-text">-Blake.</p>
+      </section>
+
+      <footer>© <span id="year"></span> Brick Bites</footer>
+    </div>
+  </div>
+
+  <script>
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // header height for snap
+    const header = document.getElementById('site-header');
+    function setHeaderHeight() {
+      const h = header.offsetHeight;
+      document.documentElement.style.setProperty('--headerH', h + 'px');
+    }
+    setHeaderHeight();
+    addEventListener('resize', setHeaderHeight);
+
+    // fade-in on view
+    const sections = document.querySelectorAll('.sentence-section');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+      });
+    }, { threshold: 0.6 });
+    sections.forEach(s => io.observe(s));
+
+    // arrow/page-down to advance
+    window.addEventListener('keydown', (e) => {
+      if (!['ArrowDown','PageDown',' '].includes(e.key)) return;
+      e.preventDefault();
+      const y = window.scrollY || document.documentElement.scrollTop;
+      const next = Array.from(sections).find(sec => sec.getBoundingClientRect().top + window.scrollY > y + 1);
+      if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</body>
+</html>
